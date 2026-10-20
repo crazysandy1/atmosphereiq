@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_02bde4fb4d66749681afb4b2d3331307 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; bottom: 50px; left: 50px; z-index: 1000; padding: 10px; background-color: white; border: 2px solid gray;">
+        <h4>AQI Legend</h4>
+        <p><span style="color: green;">■</span> Good (0-50)</p>
+        <p><span style="color: yellow;">■</span> Moderate (51-100)</p>
+        <p><span style="color: orange;">■</span> Unhealthy for Sensitive Groups (101-150)</p>
+        <p><span style="color: red;">■</span> Unhealthy (151+)</p>
+    </div>
+    
+    
+    <style>
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 0.6; } 100% { opacity: 0.3; } }
+    </style>
+    
+    
+            <div class="folium-map" id="map_02bde4fb4d66749681afb4b2d3331307" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_02bde4fb4d66749681afb4b2d3331307 = L.map(
+                "map_02bde4fb4d66749681afb4b2d3331307",
+                {
+                    center: [12.9716, 77.5946],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 11,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_b16c9a8c8c91310664b2f239f48b9ae4 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+        
+    
+            tile_layer_b16c9a8c8c91310664b2f239f48b9ae4.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+            var heat_map_f9b6e48c2eb3d5a84c63d7fe807d5698 = L.heatLayer(
+                [[12.938539, 77.5901, 155.57894736842104], [12.920984, 77.584908, 161.89473684210526], [12.951913, 77.539784, 187.1578947368421], [13.0270199, 77.494094, 152.42105263157896], [13.029152, 77.585901, 160.31578947368422], [12.9135218, 77.5950804, 164.5263157894737], [12.9756843, 77.5660749, 160.31578947368422], [12.990328, 77.5431385, 51.5], [12.917348, 77.622813, 205.04807692307693]],
+                {"blur": 15, "gradient": {"0.2": "green", "0.4": "yellow", "0.6": "orange", "1": "red"}, "maxZoom": 18, "minOpacity": 0.5, "opacity": 0.5, "radius": 15}
+            );
+        
+    
+            heat_map_f9b6e48c2eb3d5a84c63d7fe807d5698.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_f735b6accbaad201c08998144f039be8_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_f735b6accbaad201c08998144f039be8_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_f735b6accbaad201c08998144f039be8 = L.geoJson(null, {
+                onEachFeature: geo_json_f735b6accbaad201c08998144f039be8_onEachFeature,
+            
+                style: geo_json_f735b6accbaad201c08998144f039be8_styler,
+        });
+
+        function geo_json_f735b6accbaad201c08998144f039be8_add (data) {
+            geo_json_f735b6accbaad201c08998144f039be8
+                .addData(data);
+        }
+            geo_json_f735b6accbaad201c08998144f039be8_add({"features": [{"geometry": {"coordinates": [[[77.4446, 12.8216], [77.49459999999999, 12.8216], [77.49459999999999, 12.8716], [77.4446, 12.8716], [77.4446, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_f735b6accbaad201c08998144f039be8.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.47<br>AQI: 187.2 (Unhealthy)<br>Stations: Bapuji Nagar, Bengaluru, India<br>Score: 6.4
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_f735b6accbaad201c08998144f039be8.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_0d75e6c067912bf04b68e4c71472d3f5_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_0d75e6c067912bf04b68e4c71472d3f5_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_0d75e6c067912bf04b68e4c71472d3f5 = L.geoJson(null, {
+                onEachFeature: geo_json_0d75e6c067912bf04b68e4c71472d3f5_onEachFeature,
+            
+                style: geo_json_0d75e6c067912bf04b68e4c71472d3f5_styler,
+        });
+
+        function geo_json_0d75e6c067912bf04b68e4c71472d3f5_add (data) {
+            geo_json_0d75e6c067912bf04b68e4c71472d3f5
+                .addData(data);
+        }
+            geo_json_0d75e6c067912bf04b68e4c71472d3f5_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 12.8216], [77.54459999999999, 12.8216], [77.54459999999999, 12.8716], [77.49459999999999, 12.8716], [77.49459999999999, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_0d75e6c067912bf04b68e4c71472d3f5.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.52<br>AQI: 161.9 (Unhealthy)<br>Stations: Jayanagar 5th Block, Bengaluru, India<br>Score: 19.1
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_0d75e6c067912bf04b68e4c71472d3f5.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_9c62d5436d017117145f55039be3a764_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_9c62d5436d017117145f55039be3a764_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_9c62d5436d017117145f55039be3a764 = L.geoJson(null, {
+                onEachFeature: geo_json_9c62d5436d017117145f55039be3a764_onEachFeature,
+            
+                style: geo_json_9c62d5436d017117145f55039be3a764_styler,
+        });
+
+        function geo_json_9c62d5436d017117145f55039be3a764_add (data) {
+            geo_json_9c62d5436d017117145f55039be3a764
+                .addData(data);
+        }
+            geo_json_9c62d5436d017117145f55039be3a764_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 12.8216], [77.59459999999999, 12.8216], [77.59459999999999, 12.8716], [77.54459999999999, 12.8716], [77.54459999999999, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_9c62d5436d017117145f55039be3a764.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.57<br>AQI: 164.5 (Unhealthy)<br>Stations: BTM, Bangalore, India<br>Score: 17.7
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_9c62d5436d017117145f55039be3a764.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_c00ffbc5c0f2aaac9f6679870ebebf86 = L.geoJson(null, {
+                onEachFeature: geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_onEachFeature,
+            
+                style: geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_styler,
+        });
+
+        function geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_add (data) {
+            geo_json_c00ffbc5c0f2aaac9f6679870ebebf86
+                .addData(data);
+        }
+            geo_json_c00ffbc5c0f2aaac9f6679870ebebf86_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 12.8216], [77.64459999999998, 12.8216], [77.64459999999998, 12.8716], [77.59459999999999, 12.8716], [77.59459999999999, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_c00ffbc5c0f2aaac9f6679870ebebf86.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.62<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_c00ffbc5c0f2aaac9f6679870ebebf86.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_203732cd3cae51a2bce32355a36e5e1d_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_203732cd3cae51a2bce32355a36e5e1d_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_203732cd3cae51a2bce32355a36e5e1d = L.geoJson(null, {
+                onEachFeature: geo_json_203732cd3cae51a2bce32355a36e5e1d_onEachFeature,
+            
+                style: geo_json_203732cd3cae51a2bce32355a36e5e1d_styler,
+        });
+
+        function geo_json_203732cd3cae51a2bce32355a36e5e1d_add (data) {
+            geo_json_203732cd3cae51a2bce32355a36e5e1d
+                .addData(data);
+        }
+            geo_json_203732cd3cae51a2bce32355a36e5e1d_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 12.8216], [77.69459999999998, 12.8216], [77.69459999999998, 12.8716], [77.64459999999998, 12.8716], [77.64459999999998, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_203732cd3cae51a2bce32355a36e5e1d.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.67<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_203732cd3cae51a2bce32355a36e5e1d.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_34183676b63f38b51ee10caaf9cba088_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_34183676b63f38b51ee10caaf9cba088_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_34183676b63f38b51ee10caaf9cba088 = L.geoJson(null, {
+                onEachFeature: geo_json_34183676b63f38b51ee10caaf9cba088_onEachFeature,
+            
+                style: geo_json_34183676b63f38b51ee10caaf9cba088_styler,
+        });
+
+        function geo_json_34183676b63f38b51ee10caaf9cba088_add (data) {
+            geo_json_34183676b63f38b51ee10caaf9cba088
+                .addData(data);
+        }
+            geo_json_34183676b63f38b51ee10caaf9cba088_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 12.8216], [77.74459999999998, 12.8216], [77.74459999999998, 12.8716], [77.69459999999998, 12.8716], [77.69459999999998, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_34183676b63f38b51ee10caaf9cba088.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.72<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_34183676b63f38b51ee10caaf9cba088.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_d97f9eb47fd594df2d49c30418283cef_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_d97f9eb47fd594df2d49c30418283cef_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_d97f9eb47fd594df2d49c30418283cef = L.geoJson(null, {
+                onEachFeature: geo_json_d97f9eb47fd594df2d49c30418283cef_onEachFeature,
+            
+                style: geo_json_d97f9eb47fd594df2d49c30418283cef_styler,
+        });
+
+        function geo_json_d97f9eb47fd594df2d49c30418283cef_add (data) {
+            geo_json_d97f9eb47fd594df2d49c30418283cef
+                .addData(data);
+        }
+            geo_json_d97f9eb47fd594df2d49c30418283cef_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 12.8216], [77.79459999999997, 12.8216], [77.79459999999997, 12.8716], [77.74459999999998, 12.8716], [77.74459999999998, 12.8216]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_d97f9eb47fd594df2d49c30418283cef.bindTooltip(
+                `<div>
+                     Grid: Grid_12.85_77.77<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_d97f9eb47fd594df2d49c30418283cef.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18 = L.geoJson(null, {
+                onEachFeature: geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_onEachFeature,
+            
+                style: geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_styler,
+        });
+
+        function geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_add (data) {
+            geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18
+                .addData(data);
+        }
+            geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18_add({"features": [{"geometry": {"coordinates": [[[77.4446, 12.8716], [77.49459999999999, 12.8716], [77.49459999999999, 12.921600000000002], [77.4446, 12.921600000000002], [77.4446, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.47<br>AQI: 187.2 (Unhealthy)<br>Stations: Bapuji Nagar, Bengaluru, India<br>Score: 6.4
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_3dd49b712c6a1ac6053adc0f4aeb1c18.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_bfac90fe366919d0bf76766f67e688b9_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_bfac90fe366919d0bf76766f67e688b9_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_bfac90fe366919d0bf76766f67e688b9 = L.geoJson(null, {
+                onEachFeature: geo_json_bfac90fe366919d0bf76766f67e688b9_onEachFeature,
+            
+                style: geo_json_bfac90fe366919d0bf76766f67e688b9_styler,
+        });
+
+        function geo_json_bfac90fe366919d0bf76766f67e688b9_add (data) {
+            geo_json_bfac90fe366919d0bf76766f67e688b9
+                .addData(data);
+        }
+            geo_json_bfac90fe366919d0bf76766f67e688b9_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 12.8716], [77.54459999999999, 12.8716], [77.54459999999999, 12.921600000000002], [77.49459999999999, 12.921600000000002], [77.49459999999999, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_bfac90fe366919d0bf76766f67e688b9.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.52<br>AQI: 187.2 (Unhealthy)<br>Stations: Bapuji Nagar, Bengaluru, India<br>Score: 6.4
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_bfac90fe366919d0bf76766f67e688b9.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a69bcde62f183983551aff6012b56c30_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a69bcde62f183983551aff6012b56c30_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a69bcde62f183983551aff6012b56c30 = L.geoJson(null, {
+                onEachFeature: geo_json_a69bcde62f183983551aff6012b56c30_onEachFeature,
+            
+                style: geo_json_a69bcde62f183983551aff6012b56c30_styler,
+        });
+
+        function geo_json_a69bcde62f183983551aff6012b56c30_add (data) {
+            geo_json_a69bcde62f183983551aff6012b56c30
+                .addData(data);
+        }
+            geo_json_a69bcde62f183983551aff6012b56c30_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 12.8716], [77.59459999999999, 12.8716], [77.59459999999999, 12.921600000000002], [77.54459999999999, 12.921600000000002], [77.54459999999999, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a69bcde62f183983551aff6012b56c30.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.57<br>AQI: 161.9 (Unhealthy)<br>Stations: Jayanagar 5th Block, Bengaluru, India<br>Score: 19.1
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a69bcde62f183983551aff6012b56c30.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_5ad5cba850c0547b08e83414b4ebc1b8_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_5ad5cba850c0547b08e83414b4ebc1b8_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_5ad5cba850c0547b08e83414b4ebc1b8 = L.geoJson(null, {
+                onEachFeature: geo_json_5ad5cba850c0547b08e83414b4ebc1b8_onEachFeature,
+            
+                style: geo_json_5ad5cba850c0547b08e83414b4ebc1b8_styler,
+        });
+
+        function geo_json_5ad5cba850c0547b08e83414b4ebc1b8_add (data) {
+            geo_json_5ad5cba850c0547b08e83414b4ebc1b8
+                .addData(data);
+        }
+            geo_json_5ad5cba850c0547b08e83414b4ebc1b8_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 12.8716], [77.64459999999998, 12.8716], [77.64459999999998, 12.921600000000002], [77.59459999999999, 12.921600000000002], [77.59459999999999, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_5ad5cba850c0547b08e83414b4ebc1b8.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.62<br>AQI: 184.8 (Unhealthy)<br>Stations: BTM, Bangalore, India, Silk Board, Bengaluru, India<br>Score: 7.6
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_5ad5cba850c0547b08e83414b4ebc1b8.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a2e7bc7e8fecf2fa50a219734ad21b06 = L.geoJson(null, {
+                onEachFeature: geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_onEachFeature,
+            
+                style: geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_styler,
+        });
+
+        function geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_add (data) {
+            geo_json_a2e7bc7e8fecf2fa50a219734ad21b06
+                .addData(data);
+        }
+            geo_json_a2e7bc7e8fecf2fa50a219734ad21b06_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 12.8716], [77.69459999999998, 12.8716], [77.69459999999998, 12.921600000000002], [77.64459999999998, 12.921600000000002], [77.64459999999998, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a2e7bc7e8fecf2fa50a219734ad21b06.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.67<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a2e7bc7e8fecf2fa50a219734ad21b06.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_c32a4e8d910d354ef39d06eba6b93532_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_c32a4e8d910d354ef39d06eba6b93532_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_c32a4e8d910d354ef39d06eba6b93532 = L.geoJson(null, {
+                onEachFeature: geo_json_c32a4e8d910d354ef39d06eba6b93532_onEachFeature,
+            
+                style: geo_json_c32a4e8d910d354ef39d06eba6b93532_styler,
+        });
+
+        function geo_json_c32a4e8d910d354ef39d06eba6b93532_add (data) {
+            geo_json_c32a4e8d910d354ef39d06eba6b93532
+                .addData(data);
+        }
+            geo_json_c32a4e8d910d354ef39d06eba6b93532_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 12.8716], [77.74459999999998, 12.8716], [77.74459999999998, 12.921600000000002], [77.69459999999998, 12.921600000000002], [77.69459999999998, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_c32a4e8d910d354ef39d06eba6b93532.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.72<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_c32a4e8d910d354ef39d06eba6b93532.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_d974f70de9b3da86ec25ecaab9f60c22_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_d974f70de9b3da86ec25ecaab9f60c22_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_d974f70de9b3da86ec25ecaab9f60c22 = L.geoJson(null, {
+                onEachFeature: geo_json_d974f70de9b3da86ec25ecaab9f60c22_onEachFeature,
+            
+                style: geo_json_d974f70de9b3da86ec25ecaab9f60c22_styler,
+        });
+
+        function geo_json_d974f70de9b3da86ec25ecaab9f60c22_add (data) {
+            geo_json_d974f70de9b3da86ec25ecaab9f60c22
+                .addData(data);
+        }
+            geo_json_d974f70de9b3da86ec25ecaab9f60c22_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 12.8716], [77.79459999999997, 12.8716], [77.79459999999997, 12.921600000000002], [77.74459999999998, 12.921600000000002], [77.74459999999998, 12.8716]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_d974f70de9b3da86ec25ecaab9f60c22.bindTooltip(
+                `<div>
+                     Grid: Grid_12.90_77.77<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_d974f70de9b3da86ec25ecaab9f60c22.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a567793ded0b08ff08f6677125d6f340_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a567793ded0b08ff08f6677125d6f340_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a567793ded0b08ff08f6677125d6f340 = L.geoJson(null, {
+                onEachFeature: geo_json_a567793ded0b08ff08f6677125d6f340_onEachFeature,
+            
+                style: geo_json_a567793ded0b08ff08f6677125d6f340_styler,
+        });
+
+        function geo_json_a567793ded0b08ff08f6677125d6f340_add (data) {
+            geo_json_a567793ded0b08ff08f6677125d6f340
+                .addData(data);
+        }
+            geo_json_a567793ded0b08ff08f6677125d6f340_add({"features": [{"geometry": {"coordinates": [[[77.4446, 12.921600000000002], [77.49459999999999, 12.921600000000002], [77.49459999999999, 12.971600000000002], [77.4446, 12.971600000000002], [77.4446, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a567793ded0b08ff08f6677125d6f340.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.47<br>AQI: 187.2 (Unhealthy)<br>Stations: Bapuji Nagar, Bengaluru, India<br>Score: 6.4
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a567793ded0b08ff08f6677125d6f340.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_dd6bfa0c8a2ac9ce469e827492995ae3 = L.geoJson(null, {
+                onEachFeature: geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_onEachFeature,
+            
+                style: geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_styler,
+        });
+
+        function geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_add (data) {
+            geo_json_dd6bfa0c8a2ac9ce469e827492995ae3
+                .addData(data);
+        }
+            geo_json_dd6bfa0c8a2ac9ce469e827492995ae3_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 12.921600000000002], [77.54459999999999, 12.921600000000002], [77.54459999999999, 12.971600000000002], [77.49459999999999, 12.971600000000002], [77.49459999999999, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_dd6bfa0c8a2ac9ce469e827492995ae3.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.52<br>AQI: 187.2 (Unhealthy)<br>Stations: Bapuji Nagar, Bengaluru, India<br>Score: 6.4
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_dd6bfa0c8a2ac9ce469e827492995ae3.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_692ac705f952915a608c3a1767689df9_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_692ac705f952915a608c3a1767689df9_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_692ac705f952915a608c3a1767689df9 = L.geoJson(null, {
+                onEachFeature: geo_json_692ac705f952915a608c3a1767689df9_onEachFeature,
+            
+                style: geo_json_692ac705f952915a608c3a1767689df9_styler,
+        });
+
+        function geo_json_692ac705f952915a608c3a1767689df9_add (data) {
+            geo_json_692ac705f952915a608c3a1767689df9
+                .addData(data);
+        }
+            geo_json_692ac705f952915a608c3a1767689df9_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 12.921600000000002], [77.59459999999999, 12.921600000000002], [77.59459999999999, 12.971600000000002], [77.54459999999999, 12.971600000000002], [77.54459999999999, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_692ac705f952915a608c3a1767689df9.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.57<br>AQI: 155.6 (Unhealthy)<br>Stations: Hombegowda Nagar, Bengaluru, India<br>Score: 22.2
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_692ac705f952915a608c3a1767689df9.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2 = L.geoJson(null, {
+                onEachFeature: geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_onEachFeature,
+            
+                style: geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_styler,
+        });
+
+        function geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_add (data) {
+            geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2
+                .addData(data);
+        }
+            geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 12.921600000000002], [77.64459999999998, 12.921600000000002], [77.64459999999998, 12.971600000000002], [77.59459999999999, 12.971600000000002], [77.59459999999999, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.62<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_9dc2c7e3386bdbb3f0a36d68e88555f2.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_e116257cc564d7e7120b8ad7e9890a0c_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_e116257cc564d7e7120b8ad7e9890a0c_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_e116257cc564d7e7120b8ad7e9890a0c = L.geoJson(null, {
+                onEachFeature: geo_json_e116257cc564d7e7120b8ad7e9890a0c_onEachFeature,
+            
+                style: geo_json_e116257cc564d7e7120b8ad7e9890a0c_styler,
+        });
+
+        function geo_json_e116257cc564d7e7120b8ad7e9890a0c_add (data) {
+            geo_json_e116257cc564d7e7120b8ad7e9890a0c
+                .addData(data);
+        }
+            geo_json_e116257cc564d7e7120b8ad7e9890a0c_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 12.921600000000002], [77.69459999999998, 12.921600000000002], [77.69459999999998, 12.971600000000002], [77.64459999999998, 12.971600000000002], [77.64459999999998, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_e116257cc564d7e7120b8ad7e9890a0c.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.67<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_e116257cc564d7e7120b8ad7e9890a0c.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_7c5ee112746e8d04ec5da6b8f164df08_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_7c5ee112746e8d04ec5da6b8f164df08_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_7c5ee112746e8d04ec5da6b8f164df08 = L.geoJson(null, {
+                onEachFeature: geo_json_7c5ee112746e8d04ec5da6b8f164df08_onEachFeature,
+            
+                style: geo_json_7c5ee112746e8d04ec5da6b8f164df08_styler,
+        });
+
+        function geo_json_7c5ee112746e8d04ec5da6b8f164df08_add (data) {
+            geo_json_7c5ee112746e8d04ec5da6b8f164df08
+                .addData(data);
+        }
+            geo_json_7c5ee112746e8d04ec5da6b8f164df08_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 12.921600000000002], [77.74459999999998, 12.921600000000002], [77.74459999999998, 12.971600000000002], [77.69459999999998, 12.971600000000002], [77.69459999999998, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_7c5ee112746e8d04ec5da6b8f164df08.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.72<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_7c5ee112746e8d04ec5da6b8f164df08.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_bf4a04b9ab66db41c62a82f654ddc272_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_bf4a04b9ab66db41c62a82f654ddc272_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_bf4a04b9ab66db41c62a82f654ddc272 = L.geoJson(null, {
+                onEachFeature: geo_json_bf4a04b9ab66db41c62a82f654ddc272_onEachFeature,
+            
+                style: geo_json_bf4a04b9ab66db41c62a82f654ddc272_styler,
+        });
+
+        function geo_json_bf4a04b9ab66db41c62a82f654ddc272_add (data) {
+            geo_json_bf4a04b9ab66db41c62a82f654ddc272
+                .addData(data);
+        }
+            geo_json_bf4a04b9ab66db41c62a82f654ddc272_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 12.921600000000002], [77.79459999999997, 12.921600000000002], [77.79459999999997, 12.971600000000002], [77.74459999999998, 12.971600000000002], [77.74459999999998, 12.921600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_bf4a04b9ab66db41c62a82f654ddc272.bindTooltip(
+                `<div>
+                     Grid: Grid_12.95_77.77<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_bf4a04b9ab66db41c62a82f654ddc272.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_e5afa1e01a645838390ce84b8f40ac13_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_e5afa1e01a645838390ce84b8f40ac13_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_e5afa1e01a645838390ce84b8f40ac13 = L.geoJson(null, {
+                onEachFeature: geo_json_e5afa1e01a645838390ce84b8f40ac13_onEachFeature,
+            
+                style: geo_json_e5afa1e01a645838390ce84b8f40ac13_styler,
+        });
+
+        function geo_json_e5afa1e01a645838390ce84b8f40ac13_add (data) {
+            geo_json_e5afa1e01a645838390ce84b8f40ac13
+                .addData(data);
+        }
+            geo_json_e5afa1e01a645838390ce84b8f40ac13_add({"features": [{"geometry": {"coordinates": [[[77.4446, 12.971600000000002], [77.49459999999999, 12.971600000000002], [77.49459999999999, 13.021600000000003], [77.4446, 13.021600000000003], [77.4446, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_e5afa1e01a645838390ce84b8f40ac13.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.47<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_e5afa1e01a645838390ce84b8f40ac13.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_517b479cd3573311e5c031ff19f0d93c_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "yellow", "fillColor": "yellow", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_517b479cd3573311e5c031ff19f0d93c_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_517b479cd3573311e5c031ff19f0d93c = L.geoJson(null, {
+                onEachFeature: geo_json_517b479cd3573311e5c031ff19f0d93c_onEachFeature,
+            
+                style: geo_json_517b479cd3573311e5c031ff19f0d93c_styler,
+        });
+
+        function geo_json_517b479cd3573311e5c031ff19f0d93c_add (data) {
+            geo_json_517b479cd3573311e5c031ff19f0d93c
+                .addData(data);
+        }
+            geo_json_517b479cd3573311e5c031ff19f0d93c_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 12.971600000000002], [77.54459999999999, 12.971600000000002], [77.54459999999999, 13.021600000000003], [77.49459999999999, 13.021600000000003], [77.49459999999999, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_517b479cd3573311e5c031ff19f0d93c.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.52<br>AQI: 51.5 (Unhealthy for Sensitive Groups)<br>Stations: SaneguravaHalli, Bangalore, India<br>Score: 74.2
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_517b479cd3573311e5c031ff19f0d93c.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_1c9c39139968f09b0b4845584d701215_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_1c9c39139968f09b0b4845584d701215_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_1c9c39139968f09b0b4845584d701215 = L.geoJson(null, {
+                onEachFeature: geo_json_1c9c39139968f09b0b4845584d701215_onEachFeature,
+            
+                style: geo_json_1c9c39139968f09b0b4845584d701215_styler,
+        });
+
+        function geo_json_1c9c39139968f09b0b4845584d701215_add (data) {
+            geo_json_1c9c39139968f09b0b4845584d701215
+                .addData(data);
+        }
+            geo_json_1c9c39139968f09b0b4845584d701215_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 12.971600000000002], [77.59459999999999, 12.971600000000002], [77.59459999999999, 13.021600000000003], [77.54459999999999, 13.021600000000003], [77.54459999999999, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_1c9c39139968f09b0b4845584d701215.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.57<br>AQI: 160.3 (Unhealthy)<br>Stations: City Railway Station, Bangalore, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_1c9c39139968f09b0b4845584d701215.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_52cb6f3121bfb3da0b9edbe6b847f05a = L.geoJson(null, {
+                onEachFeature: geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_onEachFeature,
+            
+                style: geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_styler,
+        });
+
+        function geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_add (data) {
+            geo_json_52cb6f3121bfb3da0b9edbe6b847f05a
+                .addData(data);
+        }
+            geo_json_52cb6f3121bfb3da0b9edbe6b847f05a_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 12.971600000000002], [77.64459999999998, 12.971600000000002], [77.64459999999998, 13.021600000000003], [77.59459999999999, 13.021600000000003], [77.59459999999999, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_52cb6f3121bfb3da0b9edbe6b847f05a.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.62<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_52cb6f3121bfb3da0b9edbe6b847f05a.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_92bbc9a48b4b92535e59501c284fa7d3_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_92bbc9a48b4b92535e59501c284fa7d3_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_92bbc9a48b4b92535e59501c284fa7d3 = L.geoJson(null, {
+                onEachFeature: geo_json_92bbc9a48b4b92535e59501c284fa7d3_onEachFeature,
+            
+                style: geo_json_92bbc9a48b4b92535e59501c284fa7d3_styler,
+        });
+
+        function geo_json_92bbc9a48b4b92535e59501c284fa7d3_add (data) {
+            geo_json_92bbc9a48b4b92535e59501c284fa7d3
+                .addData(data);
+        }
+            geo_json_92bbc9a48b4b92535e59501c284fa7d3_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 12.971600000000002], [77.69459999999998, 12.971600000000002], [77.69459999999998, 13.021600000000003], [77.64459999999998, 13.021600000000003], [77.64459999999998, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_92bbc9a48b4b92535e59501c284fa7d3.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.67<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_92bbc9a48b4b92535e59501c284fa7d3.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_574df72e5bb3cd3606845255a1c9ce67_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_574df72e5bb3cd3606845255a1c9ce67_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_574df72e5bb3cd3606845255a1c9ce67 = L.geoJson(null, {
+                onEachFeature: geo_json_574df72e5bb3cd3606845255a1c9ce67_onEachFeature,
+            
+                style: geo_json_574df72e5bb3cd3606845255a1c9ce67_styler,
+        });
+
+        function geo_json_574df72e5bb3cd3606845255a1c9ce67_add (data) {
+            geo_json_574df72e5bb3cd3606845255a1c9ce67
+                .addData(data);
+        }
+            geo_json_574df72e5bb3cd3606845255a1c9ce67_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 12.971600000000002], [77.74459999999998, 12.971600000000002], [77.74459999999998, 13.021600000000003], [77.69459999999998, 13.021600000000003], [77.69459999999998, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_574df72e5bb3cd3606845255a1c9ce67.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.72<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_574df72e5bb3cd3606845255a1c9ce67.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_847d0e696c1a08f5c7595b64e9916447_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_847d0e696c1a08f5c7595b64e9916447_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_847d0e696c1a08f5c7595b64e9916447 = L.geoJson(null, {
+                onEachFeature: geo_json_847d0e696c1a08f5c7595b64e9916447_onEachFeature,
+            
+                style: geo_json_847d0e696c1a08f5c7595b64e9916447_styler,
+        });
+
+        function geo_json_847d0e696c1a08f5c7595b64e9916447_add (data) {
+            geo_json_847d0e696c1a08f5c7595b64e9916447
+                .addData(data);
+        }
+            geo_json_847d0e696c1a08f5c7595b64e9916447_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 12.971600000000002], [77.79459999999997, 12.971600000000002], [77.79459999999997, 13.021600000000003], [77.74459999999998, 13.021600000000003], [77.74459999999998, 12.971600000000002]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_847d0e696c1a08f5c7595b64e9916447.bindTooltip(
+                `<div>
+                     Grid: Grid_13.00_77.77<br>AQI: 205.0 (Very Unhealthy)<br>Stations: Silk Board, Bengaluru, India<br>Score: -2.5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_847d0e696c1a08f5c7595b64e9916447.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_e83c3e5810f719b7ff7cd942b10bcef6_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_e83c3e5810f719b7ff7cd942b10bcef6_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_e83c3e5810f719b7ff7cd942b10bcef6 = L.geoJson(null, {
+                onEachFeature: geo_json_e83c3e5810f719b7ff7cd942b10bcef6_onEachFeature,
+            
+                style: geo_json_e83c3e5810f719b7ff7cd942b10bcef6_styler,
+        });
+
+        function geo_json_e83c3e5810f719b7ff7cd942b10bcef6_add (data) {
+            geo_json_e83c3e5810f719b7ff7cd942b10bcef6
+                .addData(data);
+        }
+            geo_json_e83c3e5810f719b7ff7cd942b10bcef6_add({"features": [{"geometry": {"coordinates": [[[77.4446, 13.021600000000003], [77.49459999999999, 13.021600000000003], [77.49459999999999, 13.071600000000004], [77.4446, 13.071600000000004], [77.4446, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_e83c3e5810f719b7ff7cd942b10bcef6.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.47<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_e83c3e5810f719b7ff7cd942b10bcef6.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d = L.geoJson(null, {
+                onEachFeature: geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_onEachFeature,
+            
+                style: geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_styler,
+        });
+
+        function geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_add (data) {
+            geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d
+                .addData(data);
+        }
+            geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 13.021600000000003], [77.54459999999999, 13.021600000000003], [77.54459999999999, 13.071600000000004], [77.49459999999999, 13.071600000000004], [77.49459999999999, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.52<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_bbcecffc637d0e1ed00e3fdce7dc9f7d.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_7e0f897926ef4941be0278e49d9c40d4_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_7e0f897926ef4941be0278e49d9c40d4_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_7e0f897926ef4941be0278e49d9c40d4 = L.geoJson(null, {
+                onEachFeature: geo_json_7e0f897926ef4941be0278e49d9c40d4_onEachFeature,
+            
+                style: geo_json_7e0f897926ef4941be0278e49d9c40d4_styler,
+        });
+
+        function geo_json_7e0f897926ef4941be0278e49d9c40d4_add (data) {
+            geo_json_7e0f897926ef4941be0278e49d9c40d4
+                .addData(data);
+        }
+            geo_json_7e0f897926ef4941be0278e49d9c40d4_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 13.021600000000003], [77.59459999999999, 13.021600000000003], [77.59459999999999, 13.071600000000004], [77.54459999999999, 13.071600000000004], [77.54459999999999, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_7e0f897926ef4941be0278e49d9c40d4.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.57<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_7e0f897926ef4941be0278e49d9c40d4.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_bb4023752360a3885b0713a597f1d481_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_bb4023752360a3885b0713a597f1d481_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_bb4023752360a3885b0713a597f1d481 = L.geoJson(null, {
+                onEachFeature: geo_json_bb4023752360a3885b0713a597f1d481_onEachFeature,
+            
+                style: geo_json_bb4023752360a3885b0713a597f1d481_styler,
+        });
+
+        function geo_json_bb4023752360a3885b0713a597f1d481_add (data) {
+            geo_json_bb4023752360a3885b0713a597f1d481
+                .addData(data);
+        }
+            geo_json_bb4023752360a3885b0713a597f1d481_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 13.021600000000003], [77.64459999999998, 13.021600000000003], [77.64459999999998, 13.071600000000004], [77.59459999999999, 13.071600000000004], [77.59459999999999, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_bb4023752360a3885b0713a597f1d481.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.62<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_bb4023752360a3885b0713a597f1d481.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a18831e326c2e29f9136342d2fcce577_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a18831e326c2e29f9136342d2fcce577_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a18831e326c2e29f9136342d2fcce577 = L.geoJson(null, {
+                onEachFeature: geo_json_a18831e326c2e29f9136342d2fcce577_onEachFeature,
+            
+                style: geo_json_a18831e326c2e29f9136342d2fcce577_styler,
+        });
+
+        function geo_json_a18831e326c2e29f9136342d2fcce577_add (data) {
+            geo_json_a18831e326c2e29f9136342d2fcce577
+                .addData(data);
+        }
+            geo_json_a18831e326c2e29f9136342d2fcce577_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 13.021600000000003], [77.69459999999998, 13.021600000000003], [77.69459999999998, 13.071600000000004], [77.64459999999998, 13.071600000000004], [77.64459999999998, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a18831e326c2e29f9136342d2fcce577.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.67<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a18831e326c2e29f9136342d2fcce577.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_e2ed69c2831fb1c434dae654ba8434a6_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_e2ed69c2831fb1c434dae654ba8434a6_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_e2ed69c2831fb1c434dae654ba8434a6 = L.geoJson(null, {
+                onEachFeature: geo_json_e2ed69c2831fb1c434dae654ba8434a6_onEachFeature,
+            
+                style: geo_json_e2ed69c2831fb1c434dae654ba8434a6_styler,
+        });
+
+        function geo_json_e2ed69c2831fb1c434dae654ba8434a6_add (data) {
+            geo_json_e2ed69c2831fb1c434dae654ba8434a6
+                .addData(data);
+        }
+            geo_json_e2ed69c2831fb1c434dae654ba8434a6_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 13.021600000000003], [77.74459999999998, 13.021600000000003], [77.74459999999998, 13.071600000000004], [77.69459999999998, 13.071600000000004], [77.69459999999998, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_e2ed69c2831fb1c434dae654ba8434a6.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.72<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_e2ed69c2831fb1c434dae654ba8434a6.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_44fbad98c5515c03a28b2bfb349bca0d_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_44fbad98c5515c03a28b2bfb349bca0d_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_44fbad98c5515c03a28b2bfb349bca0d = L.geoJson(null, {
+                onEachFeature: geo_json_44fbad98c5515c03a28b2bfb349bca0d_onEachFeature,
+            
+                style: geo_json_44fbad98c5515c03a28b2bfb349bca0d_styler,
+        });
+
+        function geo_json_44fbad98c5515c03a28b2bfb349bca0d_add (data) {
+            geo_json_44fbad98c5515c03a28b2bfb349bca0d
+                .addData(data);
+        }
+            geo_json_44fbad98c5515c03a28b2bfb349bca0d_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 13.021600000000003], [77.79459999999997, 13.021600000000003], [77.79459999999997, 13.071600000000004], [77.74459999999998, 13.071600000000004], [77.74459999999998, 13.021600000000003]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_44fbad98c5515c03a28b2bfb349bca0d.bindTooltip(
+                `<div>
+                     Grid: Grid_13.05_77.77<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_44fbad98c5515c03a28b2bfb349bca0d.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_1ec273d2576e3ff8750fe44de6a97070_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_1ec273d2576e3ff8750fe44de6a97070_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_1ec273d2576e3ff8750fe44de6a97070 = L.geoJson(null, {
+                onEachFeature: geo_json_1ec273d2576e3ff8750fe44de6a97070_onEachFeature,
+            
+                style: geo_json_1ec273d2576e3ff8750fe44de6a97070_styler,
+        });
+
+        function geo_json_1ec273d2576e3ff8750fe44de6a97070_add (data) {
+            geo_json_1ec273d2576e3ff8750fe44de6a97070
+                .addData(data);
+        }
+            geo_json_1ec273d2576e3ff8750fe44de6a97070_add({"features": [{"geometry": {"coordinates": [[[77.4446, 13.071600000000004], [77.49459999999999, 13.071600000000004], [77.49459999999999, 13.121600000000004], [77.4446, 13.121600000000004], [77.4446, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_1ec273d2576e3ff8750fe44de6a97070.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.47<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_1ec273d2576e3ff8750fe44de6a97070.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_cc4896008561ee718c3b725838585a63_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_cc4896008561ee718c3b725838585a63_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_cc4896008561ee718c3b725838585a63 = L.geoJson(null, {
+                onEachFeature: geo_json_cc4896008561ee718c3b725838585a63_onEachFeature,
+            
+                style: geo_json_cc4896008561ee718c3b725838585a63_styler,
+        });
+
+        function geo_json_cc4896008561ee718c3b725838585a63_add (data) {
+            geo_json_cc4896008561ee718c3b725838585a63
+                .addData(data);
+        }
+            geo_json_cc4896008561ee718c3b725838585a63_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 13.071600000000004], [77.54459999999999, 13.071600000000004], [77.54459999999999, 13.121600000000004], [77.49459999999999, 13.121600000000004], [77.49459999999999, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_cc4896008561ee718c3b725838585a63.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.52<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_cc4896008561ee718c3b725838585a63.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_0ba1acad1985b33de4ae6276a9eb4873_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_0ba1acad1985b33de4ae6276a9eb4873_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_0ba1acad1985b33de4ae6276a9eb4873 = L.geoJson(null, {
+                onEachFeature: geo_json_0ba1acad1985b33de4ae6276a9eb4873_onEachFeature,
+            
+                style: geo_json_0ba1acad1985b33de4ae6276a9eb4873_styler,
+        });
+
+        function geo_json_0ba1acad1985b33de4ae6276a9eb4873_add (data) {
+            geo_json_0ba1acad1985b33de4ae6276a9eb4873
+                .addData(data);
+        }
+            geo_json_0ba1acad1985b33de4ae6276a9eb4873_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 13.071600000000004], [77.59459999999999, 13.071600000000004], [77.59459999999999, 13.121600000000004], [77.54459999999999, 13.121600000000004], [77.54459999999999, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_0ba1acad1985b33de4ae6276a9eb4873.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.57<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_0ba1acad1985b33de4ae6276a9eb4873.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_3bde22429626fe6f5f35a5a97e9daa03_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_3bde22429626fe6f5f35a5a97e9daa03_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_3bde22429626fe6f5f35a5a97e9daa03 = L.geoJson(null, {
+                onEachFeature: geo_json_3bde22429626fe6f5f35a5a97e9daa03_onEachFeature,
+            
+                style: geo_json_3bde22429626fe6f5f35a5a97e9daa03_styler,
+        });
+
+        function geo_json_3bde22429626fe6f5f35a5a97e9daa03_add (data) {
+            geo_json_3bde22429626fe6f5f35a5a97e9daa03
+                .addData(data);
+        }
+            geo_json_3bde22429626fe6f5f35a5a97e9daa03_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 13.071600000000004], [77.64459999999998, 13.071600000000004], [77.64459999999998, 13.121600000000004], [77.59459999999999, 13.121600000000004], [77.59459999999999, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_3bde22429626fe6f5f35a5a97e9daa03.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.62<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_3bde22429626fe6f5f35a5a97e9daa03.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a184d40edbe8fd4e6d5712394e81be62_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a184d40edbe8fd4e6d5712394e81be62_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a184d40edbe8fd4e6d5712394e81be62 = L.geoJson(null, {
+                onEachFeature: geo_json_a184d40edbe8fd4e6d5712394e81be62_onEachFeature,
+            
+                style: geo_json_a184d40edbe8fd4e6d5712394e81be62_styler,
+        });
+
+        function geo_json_a184d40edbe8fd4e6d5712394e81be62_add (data) {
+            geo_json_a184d40edbe8fd4e6d5712394e81be62
+                .addData(data);
+        }
+            geo_json_a184d40edbe8fd4e6d5712394e81be62_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 13.071600000000004], [77.69459999999998, 13.071600000000004], [77.69459999999998, 13.121600000000004], [77.64459999999998, 13.121600000000004], [77.64459999999998, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a184d40edbe8fd4e6d5712394e81be62.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.67<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a184d40edbe8fd4e6d5712394e81be62.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_72b431a65b4a3744d9641b5bcabf02cf_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_72b431a65b4a3744d9641b5bcabf02cf_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_72b431a65b4a3744d9641b5bcabf02cf = L.geoJson(null, {
+                onEachFeature: geo_json_72b431a65b4a3744d9641b5bcabf02cf_onEachFeature,
+            
+                style: geo_json_72b431a65b4a3744d9641b5bcabf02cf_styler,
+        });
+
+        function geo_json_72b431a65b4a3744d9641b5bcabf02cf_add (data) {
+            geo_json_72b431a65b4a3744d9641b5bcabf02cf
+                .addData(data);
+        }
+            geo_json_72b431a65b4a3744d9641b5bcabf02cf_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 13.071600000000004], [77.74459999999998, 13.071600000000004], [77.74459999999998, 13.121600000000004], [77.69459999999998, 13.121600000000004], [77.69459999999998, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_72b431a65b4a3744d9641b5bcabf02cf.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.72<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_72b431a65b4a3744d9641b5bcabf02cf.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_c6bec98da7cdba71649b4b18650f189e_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_c6bec98da7cdba71649b4b18650f189e_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_c6bec98da7cdba71649b4b18650f189e = L.geoJson(null, {
+                onEachFeature: geo_json_c6bec98da7cdba71649b4b18650f189e_onEachFeature,
+            
+                style: geo_json_c6bec98da7cdba71649b4b18650f189e_styler,
+        });
+
+        function geo_json_c6bec98da7cdba71649b4b18650f189e_add (data) {
+            geo_json_c6bec98da7cdba71649b4b18650f189e
+                .addData(data);
+        }
+            geo_json_c6bec98da7cdba71649b4b18650f189e_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 13.071600000000004], [77.79459999999997, 13.071600000000004], [77.79459999999997, 13.121600000000004], [77.74459999999998, 13.121600000000004], [77.74459999999998, 13.071600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_c6bec98da7cdba71649b4b18650f189e.bindTooltip(
+                `<div>
+                     Grid: Grid_13.10_77.77<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_c6bec98da7cdba71649b4b18650f189e.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_6b433e0eafbe8f2ce6e05301c5109326_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_6b433e0eafbe8f2ce6e05301c5109326_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_6b433e0eafbe8f2ce6e05301c5109326 = L.geoJson(null, {
+                onEachFeature: geo_json_6b433e0eafbe8f2ce6e05301c5109326_onEachFeature,
+            
+                style: geo_json_6b433e0eafbe8f2ce6e05301c5109326_styler,
+        });
+
+        function geo_json_6b433e0eafbe8f2ce6e05301c5109326_add (data) {
+            geo_json_6b433e0eafbe8f2ce6e05301c5109326
+                .addData(data);
+        }
+            geo_json_6b433e0eafbe8f2ce6e05301c5109326_add({"features": [{"geometry": {"coordinates": [[[77.4446, 13.121600000000004], [77.49459999999999, 13.121600000000004], [77.49459999999999, 13.171600000000005], [77.4446, 13.171600000000005], [77.4446, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_6b433e0eafbe8f2ce6e05301c5109326.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.47<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_6b433e0eafbe8f2ce6e05301c5109326.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_5cfaff34d8b371c2391893a7bce50b63_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_5cfaff34d8b371c2391893a7bce50b63_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_5cfaff34d8b371c2391893a7bce50b63 = L.geoJson(null, {
+                onEachFeature: geo_json_5cfaff34d8b371c2391893a7bce50b63_onEachFeature,
+            
+                style: geo_json_5cfaff34d8b371c2391893a7bce50b63_styler,
+        });
+
+        function geo_json_5cfaff34d8b371c2391893a7bce50b63_add (data) {
+            geo_json_5cfaff34d8b371c2391893a7bce50b63
+                .addData(data);
+        }
+            geo_json_5cfaff34d8b371c2391893a7bce50b63_add({"features": [{"geometry": {"coordinates": [[[77.49459999999999, 13.121600000000004], [77.54459999999999, 13.121600000000004], [77.54459999999999, 13.171600000000005], [77.49459999999999, 13.171600000000005], [77.49459999999999, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_5cfaff34d8b371c2391893a7bce50b63.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.52<br>AQI: 152.4 (Unhealthy)<br>Stations: Peenya, Bangalore, India<br>Score: 23.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_5cfaff34d8b371c2391893a7bce50b63.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea = L.geoJson(null, {
+                onEachFeature: geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_onEachFeature,
+            
+                style: geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_styler,
+        });
+
+        function geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_add (data) {
+            geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea
+                .addData(data);
+        }
+            geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea_add({"features": [{"geometry": {"coordinates": [[[77.54459999999999, 13.121600000000004], [77.59459999999999, 13.121600000000004], [77.59459999999999, 13.171600000000005], [77.54459999999999, 13.171600000000005], [77.54459999999999, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.57<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_6fa3d83a0cd89508d0f2c3913bf0a1ea.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_a888f8d9daba38fd3bd6f05f29d51879_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_a888f8d9daba38fd3bd6f05f29d51879_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_a888f8d9daba38fd3bd6f05f29d51879 = L.geoJson(null, {
+                onEachFeature: geo_json_a888f8d9daba38fd3bd6f05f29d51879_onEachFeature,
+            
+                style: geo_json_a888f8d9daba38fd3bd6f05f29d51879_styler,
+        });
+
+        function geo_json_a888f8d9daba38fd3bd6f05f29d51879_add (data) {
+            geo_json_a888f8d9daba38fd3bd6f05f29d51879
+                .addData(data);
+        }
+            geo_json_a888f8d9daba38fd3bd6f05f29d51879_add({"features": [{"geometry": {"coordinates": [[[77.59459999999999, 13.121600000000004], [77.64459999999998, 13.121600000000004], [77.64459999999998, 13.171600000000005], [77.59459999999999, 13.171600000000005], [77.59459999999999, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_a888f8d9daba38fd3bd6f05f29d51879.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.62<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_a888f8d9daba38fd3bd6f05f29d51879.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_7ef5b162369a50de3fe87d5390765211_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_7ef5b162369a50de3fe87d5390765211_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_7ef5b162369a50de3fe87d5390765211 = L.geoJson(null, {
+                onEachFeature: geo_json_7ef5b162369a50de3fe87d5390765211_onEachFeature,
+            
+                style: geo_json_7ef5b162369a50de3fe87d5390765211_styler,
+        });
+
+        function geo_json_7ef5b162369a50de3fe87d5390765211_add (data) {
+            geo_json_7ef5b162369a50de3fe87d5390765211
+                .addData(data);
+        }
+            geo_json_7ef5b162369a50de3fe87d5390765211_add({"features": [{"geometry": {"coordinates": [[[77.64459999999998, 13.121600000000004], [77.69459999999998, 13.121600000000004], [77.69459999999998, 13.171600000000005], [77.64459999999998, 13.171600000000005], [77.64459999999998, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_7ef5b162369a50de3fe87d5390765211.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.67<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_7ef5b162369a50de3fe87d5390765211.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_aba9bc02b886a476c6c9334c06b13545_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_aba9bc02b886a476c6c9334c06b13545_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_aba9bc02b886a476c6c9334c06b13545 = L.geoJson(null, {
+                onEachFeature: geo_json_aba9bc02b886a476c6c9334c06b13545_onEachFeature,
+            
+                style: geo_json_aba9bc02b886a476c6c9334c06b13545_styler,
+        });
+
+        function geo_json_aba9bc02b886a476c6c9334c06b13545_add (data) {
+            geo_json_aba9bc02b886a476c6c9334c06b13545
+                .addData(data);
+        }
+            geo_json_aba9bc02b886a476c6c9334c06b13545_add({"features": [{"geometry": {"coordinates": [[[77.69459999999998, 13.121600000000004], [77.74459999999998, 13.121600000000004], [77.74459999999998, 13.171600000000005], [77.69459999999998, 13.171600000000005], [77.69459999999998, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_aba9bc02b886a476c6c9334c06b13545.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.72<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_aba9bc02b886a476c6c9334c06b13545.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        function geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "pulse", "color": "red", "fillColor": "red", "fillOpacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0 = L.geoJson(null, {
+                onEachFeature: geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_onEachFeature,
+            
+                style: geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_styler,
+        });
+
+        function geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_add (data) {
+            geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0
+                .addData(data);
+        }
+            geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0_add({"features": [{"geometry": {"coordinates": [[[77.74459999999998, 13.121600000000004], [77.79459999999997, 13.121600000000004], [77.79459999999997, 13.171600000000005], [77.74459999999998, 13.171600000000005], [77.74459999999998, 13.121600000000004]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0.bindTooltip(
+                `<div>
+                     Grid: Grid_13.15_77.77<br>AQI: 160.3 (Unhealthy)<br>Stations: Hebbal, Bengaluru, India<br>Score: 19.8
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            geo_json_bd9cb005d5d7ea957d12a8cb45d0bbf0.addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+            var circle_marker_14f6f044a38376d4bb2901bad48c2ca5 = L.circleMarker(
+                [12.938539, 77.5901],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_126b46974a336c3e2a04fa85800f3934 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3f4e634461e745dde021d4da900a6a46 = $(`<div id="html_3f4e634461e745dde021d4da900a6a46" style="width: 100.0%; height: 100.0%;">Station: Hombegowda Nagar, Bengaluru, India<br>AQI: 155.6 (Unhealthy)<br>PM2.5: 66.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_126b46974a336c3e2a04fa85800f3934.setContent(html_3f4e634461e745dde021d4da900a6a46);
+            
+        
+
+        circle_marker_14f6f044a38376d4bb2901bad48c2ca5.bindPopup(popup_126b46974a336c3e2a04fa85800f3934)
+        ;
+
+        
+    
+    
+            var circle_marker_689b54d34c9cce7c7455700bcad7e30e = L.circleMarker(
+                [12.920984, 77.584908],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_75cdd3c5cc2ac135829c84a21109f90d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8786ec66b14cc5def26d324858a8a752 = $(`<div id="html_8786ec66b14cc5def26d324858a8a752" style="width: 100.0%; height: 100.0%;">Station: Jayanagar 5th Block, Bengaluru, India<br>AQI: 161.9 (Unhealthy)<br>PM2.5: 78.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_75cdd3c5cc2ac135829c84a21109f90d.setContent(html_8786ec66b14cc5def26d324858a8a752);
+            
+        
+
+        circle_marker_689b54d34c9cce7c7455700bcad7e30e.bindPopup(popup_75cdd3c5cc2ac135829c84a21109f90d)
+        ;
+
+        
+    
+    
+            var circle_marker_d4c29d7244d20dc0d1e24b6584909123 = L.circleMarker(
+                [12.951913, 77.539784],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_80cb9757d247734dde11743f522837f4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_042ad48357fc6b9e1da0129749a8c23c = $(`<div id="html_042ad48357fc6b9e1da0129749a8c23c" style="width: 100.0%; height: 100.0%;">Station: Bapuji Nagar, Bengaluru, India<br>AQI: 187.2 (Unhealthy)<br>PM2.5: 126.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_80cb9757d247734dde11743f522837f4.setContent(html_042ad48357fc6b9e1da0129749a8c23c);
+            
+        
+
+        circle_marker_d4c29d7244d20dc0d1e24b6584909123.bindPopup(popup_80cb9757d247734dde11743f522837f4)
+        ;
+
+        
+    
+    
+            var circle_marker_70cb924c53479abed996108280238a60 = L.circleMarker(
+                [13.0270199, 77.494094],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_96ee92d96ec13c461722dee2d27d26d4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_407e81e1d8b3c1cefee4398294d21bb8 = $(`<div id="html_407e81e1d8b3c1cefee4398294d21bb8" style="width: 100.0%; height: 100.0%;">Station: Peenya, Bangalore, India<br>AQI: 152.4 (Unhealthy)<br>PM2.5: 60.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_96ee92d96ec13c461722dee2d27d26d4.setContent(html_407e81e1d8b3c1cefee4398294d21bb8);
+            
+        
+
+        circle_marker_70cb924c53479abed996108280238a60.bindPopup(popup_96ee92d96ec13c461722dee2d27d26d4)
+        ;
+
+        
+    
+    
+            var circle_marker_8e27098b620f4f5e1df901fde7946d75 = L.circleMarker(
+                [13.029152, 77.585901],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_4cbf31d2b9d167465554f9599783f4a2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2ddcd69d45e9d679be4e24e9a1ec620e = $(`<div id="html_2ddcd69d45e9d679be4e24e9a1ec620e" style="width: 100.0%; height: 100.0%;">Station: Hebbal, Bengaluru, India<br>AQI: 160.3 (Unhealthy)<br>PM2.5: 75.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_4cbf31d2b9d167465554f9599783f4a2.setContent(html_2ddcd69d45e9d679be4e24e9a1ec620e);
+            
+        
+
+        circle_marker_8e27098b620f4f5e1df901fde7946d75.bindPopup(popup_4cbf31d2b9d167465554f9599783f4a2)
+        ;
+
+        
+    
+    
+            var circle_marker_1cb006f7af4ddc678bbd6cb0be8422cf = L.circleMarker(
+                [12.9135218, 77.5950804],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_e7efcecf73241332635cf7cf9dcf15c8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d361a00ad4f5a45c5e50eb2568796ddf = $(`<div id="html_d361a00ad4f5a45c5e50eb2568796ddf" style="width: 100.0%; height: 100.0%;">Station: BTM, Bangalore, India<br>AQI: 164.5 (Unhealthy)<br>PM2.5: 83.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_e7efcecf73241332635cf7cf9dcf15c8.setContent(html_d361a00ad4f5a45c5e50eb2568796ddf);
+            
+        
+
+        circle_marker_1cb006f7af4ddc678bbd6cb0be8422cf.bindPopup(popup_e7efcecf73241332635cf7cf9dcf15c8)
+        ;
+
+        
+    
+    
+            var circle_marker_ab13b1b98029e88771194bdfe2d68976 = L.circleMarker(
+                [12.9756843, 77.5660749],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_31e9196a50bf1e50a0b56c5944a50703 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3cbf62098b47d1afa263ee21cc3a5f94 = $(`<div id="html_3cbf62098b47d1afa263ee21cc3a5f94" style="width: 100.0%; height: 100.0%;">Station: City Railway Station, Bangalore, India<br>AQI: 160.3 (Unhealthy)<br>PM2.5: 75.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_31e9196a50bf1e50a0b56c5944a50703.setContent(html_3cbf62098b47d1afa263ee21cc3a5f94);
+            
+        
+
+        circle_marker_ab13b1b98029e88771194bdfe2d68976.bindPopup(popup_31e9196a50bf1e50a0b56c5944a50703)
+        ;
+
+        
+    
+    
+            var circle_marker_94b094fcf8bc240959f403cff8805182 = L.circleMarker(
+                [12.990328, 77.5431385],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_28c3dfa572ead8073d0b875fc51df849 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fb6c8b77fd72009bd5fad0e4e6f940a1 = $(`<div id="html_fb6c8b77fd72009bd5fad0e4e6f940a1" style="width: 100.0%; height: 100.0%;">Station: SaneguravaHalli, Bangalore, India<br>AQI: 51.5 (Unhealthy for Sensitive Groups)<br>PM2.5: 36.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_28c3dfa572ead8073d0b875fc51df849.setContent(html_fb6c8b77fd72009bd5fad0e4e6f940a1);
+            
+        
+
+        circle_marker_94b094fcf8bc240959f403cff8805182.bindPopup(popup_28c3dfa572ead8073d0b875fc51df849)
+        ;
+
+        
+    
+    
+            var circle_marker_de99c51af6e288f7917fd07f03ee0a13 = L.circleMarker(
+                [12.917348, 77.622813],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_02bde4fb4d66749681afb4b2d3331307);
+        
+    
+        var popup_9c5facfb9d294cfdcf1d4b62dc0e0c32 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b10d527f76d2d97f03dd817d3bc82427 = $(`<div id="html_b10d527f76d2d97f03dd817d3bc82427" style="width: 100.0%; height: 100.0%;">Station: Silk Board, Bengaluru, India<br>AQI: 205.0 (Very Unhealthy)<br>PM2.5: 163.0 µg/m³<br>Updated: 2025-05-07T16:11:25.253351+00:00</div>`)[0];
+                popup_9c5facfb9d294cfdcf1d4b62dc0e0c32.setContent(html_b10d527f76d2d97f03dd817d3bc82427);
+            
+        
+
+        circle_marker_de99c51af6e288f7917fd07f03ee0a13.bindPopup(popup_9c5facfb9d294cfdcf1d4b62dc0e0c32)
+        ;
+
+        
+    
+</script>
+</html>
